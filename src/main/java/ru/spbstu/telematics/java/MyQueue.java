@@ -17,13 +17,22 @@ public class MyQueue<E> implemenus Queue<E>, Iterable<E>
     }
 
     @Override
-    public boolean add(E elem){
+    public void add(E elem){
     if (elem == null) throw new NullPointerException("Элемент не может быть null");
     if (size == array.length) resize();
     array[tail] = elem;
     tail = (tail + 1) % array.length;
     size++;
-    return true;
+    }
+
+    @Override
+    public boolean offer(E elem){
+        try{
+            return add(elem);
+        } catch (Exeption ex){
+            rerurn false;
+        }
+
     }
 
     @Override
@@ -31,10 +40,19 @@ public class MyQueue<E> implemenus Queue<E>, Iterable<E>
         if (size == 0) {
             throw new NoSuchFieldException("Queue is empty");
         }
-        E elem = (E) array[head];
-        array[head] = null;
-        head = (head+1) %array.length;
-        size--;
-        return elem;
+        return this.poll();
     }
+
+    @Override
+    public E poll(){
+    if (size == 0) {
+        return null;
+    }
+    E elem = (E) array[head];
+    array[head] = null;
+    head = (head+1) %array.length;
+    size--;
+    return elem;
+    }
+    
 }
