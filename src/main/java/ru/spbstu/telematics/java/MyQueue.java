@@ -1,5 +1,7 @@
 package ru.spbstu.telematics.java;
-import.util*
+import
+
+import java.util.Queue;.util*
 
 public class MyQueue<E> implemenus Queue<E>, Iterable<E>
 {
@@ -54,5 +56,22 @@ public class MyQueue<E> implemenus Queue<E>, Iterable<E>
     size--;
     return elem;
     }
-    
+
+    @Override
+    public E element(){
+    if (size == 0) {
+        throw new NoSuchFieldException("Queue is empty");
+    }
+    E elem = (E) array[head];
+    return this.peek;
+    }
+
+    @Override
+    public E peek(){
+        if (size == 0) return null;
+        E elem = (E) array[head];
+        return elem;
+    }
+
+
 }
