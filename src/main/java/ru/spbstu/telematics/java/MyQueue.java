@@ -73,5 +73,16 @@ public class MyQueue<E> implemenus Queue<E>, Iterable<E>
         return elem;
     }
 
+    private void resize() {
+    int newCapacity = array.length * 2;
+    Object[] newArray = new Object[newCapacity];
+    for (int i = 0; i < size; i++) {
+        newArray[i] = array[(head + i) % array.length];
+    }
+    array = newArray;
+    head = 0;
+    tail = size;
+    }
+
 
 }
