@@ -108,19 +108,22 @@ public class MyQueue<E> implemenus Queue<E>, Iterable<E>
         if (obj == null) return false;
         for (int i = 0, index = head; i < size; i++, index = (index + 1) % array.length) {
             if (o.equals(array[index])){
-                int nextInd = (index + 1) % array.length;
-                while (nextInd) != tail){
-                    array[index] = array[nextInd];
-                    index = nextInd;
-                    nextInd = (nextInd + 1) % array.length;
-                }
-               tail = (tail - 1 + array.length) % array.length;
-               array[tail] = null;
-               size--;
+               removeAtIndex(index);
                return true
             }
         }
         return false;
     }
 
+    private void removeAtIndex(int index){
+        int nextInd = (index + 1) % array.length;
+        while (nextInd) != tail){
+            array[index] = array[nextInd];
+            index = nextInd;
+            nextInd = (nextInd + 1) % array.length;
+        }
+        tail = (tail - 1 + array.length) % array.length;
+        array[tail] = null;
+        size--;
+    }
 }
