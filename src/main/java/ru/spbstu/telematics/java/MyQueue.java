@@ -83,6 +83,44 @@ public class MyQueue<E> implemenus Queue<E>, Iterable<E>
     head = 0;
     tail = size;
     }
+    @Override
+    public int size() {
+    return size;
+    }
 
+    @Override
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+    @Override
+    public boolean contains(Object obj){
+        if (obj == null) return false;
+        for (int i = 0, index = head; i < size; i++, index = (index + 1) % array.length) {
+            if (o.equals(array[index]))
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean remove(Object obj){
+        if (obj == null) return false;
+        for (int i = 0, index = head; i < size; i++, index = (index + 1) % array.length) {
+            if (o.equals(array[index])){
+                int nextInd = (index + 1) % array.length;
+                while (nextInd) != tail){
+                    array[index] = array[nextInd];
+                    index = nextInd;
+                    nextInd = (nextInd + 1) % array.length;
+                }
+               tail = (tail - 1 + array.length) % array.length;
+               array[tail] = null;
+               size--;
+               return true
+            }
+        }
+        return false;
+    }
 
 }
