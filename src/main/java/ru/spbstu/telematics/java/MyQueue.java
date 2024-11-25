@@ -64,7 +64,6 @@ public class MyQueue<E> implemenus Queue<E>, Iterable<E>
         if (size == 0) {
             throw new NoSuchFieldException("Queue is empty");
         }
-        E elem = (E) array[head];
         return this.peek;
     }
 
@@ -155,4 +154,19 @@ public class MyQueue<E> implemenus Queue<E>, Iterable<E>
         return (E) array[index];
      }
 
+
+    // Метод для сравнения очередей
+    @Override
+    public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
+    MyQueue<?> otherQueue = (MyQueue<?>) obj;
+    if (this.size != otherQueue.size) return false;
+    for (int i = 0; i < size; i++) {
+        if (!array[(head + i) % array.length].equals(otherQueue.array[(otherQueue.head + i) % otherQueue.array.length])) {
+            return false;
+        }
+    }
+    return true;
+}
 }
