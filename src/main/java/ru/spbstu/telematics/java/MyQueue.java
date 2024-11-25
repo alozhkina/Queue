@@ -1,11 +1,7 @@
 package ru.spbstu.telematics.java;
-import
+import java.util.*;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Queue;.util*
-
-public class MyQueue<E> implemenus Queue<E>, Iterable<E>
+public class MyQueue<E> implements Queue<E>, Iterable<E>
 {
     private Object[] array;
     private int head;
@@ -21,7 +17,7 @@ public class MyQueue<E> implemenus Queue<E>, Iterable<E>
     }
 
     @Override
-    public void add(E elem) {
+    public boolean add(E elem) {
         if (elem == null) throw new NullPointerException("Элемент не может быть null");
         if (size == array.length) resize();
         array[tail] = elem;
@@ -42,7 +38,7 @@ public class MyQueue<E> implemenus Queue<E>, Iterable<E>
     @Override
     public E remove() {
         if (size == 0) {
-            throw new NoSuchFieldException("Queue is empty");
+            throw new NoSuchElementException("Queue is empty");
         }
         return this.poll();
     }
@@ -62,7 +58,7 @@ public class MyQueue<E> implemenus Queue<E>, Iterable<E>
     @Override
     public E element(){
         if (size == 0) {
-            throw new NoSuchFieldException("Queue is empty");
+            throw new NoSuchElementException("Queue is empty");
         }
         return this.peek;
     }
@@ -98,7 +94,7 @@ public class MyQueue<E> implemenus Queue<E>, Iterable<E>
     public boolean contains(Object obj){
         if (obj == null) return false;
         for (int i = 0, index = head; i < size; i++, index = (index + 1) % array.length) {
-            if (o.equals(array[index]))
+            if (obj.equals(array[index]))
                 return true;
         }
         return false;
@@ -108,7 +104,7 @@ public class MyQueue<E> implemenus Queue<E>, Iterable<E>
     public boolean remove(Object obj){
         if (obj == null) return false;
         for (int i = 0, index = head; i < size; i++, index = (index + 1) % array.length) {
-            if (o.equals(array[index])){
+            if (obj.equals(array[index])){
                removeAtIndex(index);
                return true
             }
@@ -118,7 +114,7 @@ public class MyQueue<E> implemenus Queue<E>, Iterable<E>
 
     private void removeAtIndex(int index){
         int nextInd = (index + 1) % array.length;
-        while (nextInd) != tail){
+        while (nextInd != tail){
             array[index] = array[nextInd];
             index = nextInd;
             nextInd = (nextInd + 1) % array.length;
@@ -157,16 +153,90 @@ public class MyQueue<E> implemenus Queue<E>, Iterable<E>
 
     // Метод для сравнения очередей
     @Override
-    public boolean equals(Object obj) {
-    if (this == obj) return true;
-    if (obj == null || getClass() != obj.getClass()) return false;
-    MyQueue<?> otherQueue = (MyQueue<?>) obj;
-    if (this.size != otherQueue.size) return false;
-    for (int i = 0; i < size; i++) {
-        if (!array[(head + i) % array.length].equals(otherQueue.array[(otherQueue.head + i) % otherQueue.array.length])) {
-            return false;
+    public boolean equals(Object obj){
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        MyQueue<?> otherQueue = (MyQueue<?>) obj;
+        if (this.size != otherQueue.size) return false;
+        for (int i = 0; i < size; i++) {
+            if (!array[(head + i) % array.length].equals(otherQueue.array[(otherQueue.head + i) % otherQueue.array.length])) {
+                return false;
+            }
         }
+        return true;
     }
-    return true;
-}
+
+    @Override
+    public boolean addAll(Collection<? extends E> c){
+        boolean buf = false;
+        for (E elem : c){
+            if (add(elem)) buf = true;
+        }
+        return buf;
+    }
+
+    @Override
+    public void clear(){
+        while (!isEmpty()) poll();
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c){
+        boolean buf = false;
+        Iterator<E> iterator = this.iterator();
+        while (iterator.hasNext()){
+            E elem = iterator.next();
+            if (!c.contains(elem)){
+                iterator.remove();
+                buf = true;
+            }
+        }
+        return buf;
+    }
+    @Override
+    public boolean removeAll(Collection<?> c){
+        boolean buf = false;
+        Iterator<E> iterator = this.iterator();
+        while (iterator.hasNext()){
+            E elem = iterator.next();
+            if (c.contains(elem)){
+                iterator.remove();
+                buf = true;
+            }
+        }
+        return buf;
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        for (Object obj : c){
+            if(!contains(obj)) return false;
+        }
+        return true;
+    }
+
+    @Override
+    public Object[] toArray(){
+        Object[] result = new Object[size];
+        for(int i = 0; i<size; i++){
+            result[i] = array[(head+i) % array.length];
+        }
+        return result;
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a){
+        if (a.length<size){
+            a = (T[]) Arrays.copyOf(array, size, a.getClass());
+        }
+        for (int i = 0; i < size; i++) {
+            a[i] = (T) array[(head + i) % array.length];
+        }
+        if (a.length > size) {
+            a[size] = null;
+        }
+        return a;
+    }
+
+
 }
