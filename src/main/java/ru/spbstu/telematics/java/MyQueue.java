@@ -1,6 +1,8 @@
 package ru.spbstu.telematics.java;
 import
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Queue;.util*
 
 public class MyQueue<E> implemenus Queue<E>, Iterable<E>
@@ -19,12 +21,12 @@ public class MyQueue<E> implemenus Queue<E>, Iterable<E>
     }
 
     @Override
-    public void add(E elem){
-    if (elem == null) throw new NullPointerException("Элемент не может быть null");
-    if (size == array.length) resize();
-    array[tail] = elem;
-    tail = (tail + 1) % array.length;
-    size++;
+    public void add(E elem) {
+        if (elem == null) throw new NullPointerException("Элемент не может быть null");
+        if (size == array.length) resize();
+        array[tail] = elem;
+        tail = (tail + 1) % array.length;
+        size++;
     }
 
     @Override
@@ -46,24 +48,24 @@ public class MyQueue<E> implemenus Queue<E>, Iterable<E>
     }
 
     @Override
-    public E poll(){
-    if (size == 0) {
-        return null;
-    }
-    E elem = (E) array[head];
-    array[head] = null;
-    head = (head+1) %array.length;
-    size--;
-    return elem;
+    public E poll() {
+        if (size == 0) {
+            return null;
+        }
+        E elem = (E) array[head];
+        array[head] = null;
+        head = (head+1) %array.length;
+        size--;
+        return elem;
     }
 
     @Override
     public E element(){
-    if (size == 0) {
-        throw new NoSuchFieldException("Queue is empty");
-    }
-    E elem = (E) array[head];
-    return this.peek;
+        if (size == 0) {
+            throw new NoSuchFieldException("Queue is empty");
+        }
+        E elem = (E) array[head];
+        return this.peek;
     }
 
     @Override
@@ -74,18 +76,18 @@ public class MyQueue<E> implemenus Queue<E>, Iterable<E>
     }
 
     private void resize() {
-    int newCapacity = array.length * 2;
-    Object[] newArray = new Object[newCapacity];
-    for (int i = 0; i < size; i++) {
-        newArray[i] = array[(head + i) % array.length];
-    }
-    array = newArray;
-    head = 0;
-    tail = size;
+        int newCapacity = array.length * 2;
+        Object[] newArray = new Object[newCapacity];
+        for (int i = 0; i < size; i++) {
+            newArray[i] = array[(head + i) % array.length];
+        }
+        array = newArray;
+        head = 0;
+        tail = size;
     }
     @Override
     public int size() {
-    return size;
+        return size;
     }
 
     @Override
@@ -126,4 +128,31 @@ public class MyQueue<E> implemenus Queue<E>, Iterable<E>
         array[tail] = null;
         size--;
     }
+
+    @Override
+    public Iterator<E> iterator() {
+        return new Iterator<E>() {
+            private int count = 0;
+            private int currentIndex = head;
+
+            @Override
+            public boolean hasNext(){
+                return count < size;
+            }
+
+            @Override
+            public E next(){
+                if (!hasNext()) throw new NoSuchElementException();
+                E elem = getElement(currentIndex);
+                currentIndex = (currentIndex + 1)% array.length;
+                count++;
+                return elem;
+            }
+        };
+
+    }
+     private E getElement(int index){
+        return (E) array[index];
+     }
+
 }
