@@ -28,11 +28,7 @@ public class MyQueue<E> implements Queue<E>, Iterable<E>
 
     @Override
     public boolean offer(E elem){
-        try{
-            return add(elem);
-        } catch (Exception ex){
-            return false;
-        }
+        return add(elem);
 
     }
 
@@ -184,27 +180,33 @@ public class MyQueue<E> implements Queue<E>, Iterable<E>
     @Override
     public boolean retainAll(Collection<?> c){
         boolean buf = false;
-        Iterator<E> iterator = this.iterator();
-        while (iterator.hasNext()){
-            E elem = iterator.next();
-            if (!c.contains(elem)){
-                iterator.remove();
+
+        for (int i = 0; i < size; ) {
+            int index = (head + i) % array.length;
+            if (!c.contains(array[index])) {
+                removeAtIndex(index);
                 buf = true;
+            } else {
+                i++;
             }
         }
+
         return buf;
     }
     @Override
     public boolean removeAll(Collection<?> c){
         boolean buf = false;
-        Iterator<E> iterator = this.iterator();
-        while (iterator.hasNext()){
-            E elem = iterator.next();
-            if (c.contains(elem)){
-                iterator.remove();
+
+        for (int i = 0; i < size; ) {
+            int index = (head + i) % array.length;
+            if (c.contains(array[index])) {
+                removeAtIndex(index);
                 buf = true;
+            } else {
+                i++;
             }
         }
+
         return buf;
     }
 
@@ -238,6 +240,4 @@ public class MyQueue<E> implements Queue<E>, Iterable<E>
         }
         return a;
     }
-
-
 }
