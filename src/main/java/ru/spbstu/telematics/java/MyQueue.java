@@ -23,14 +23,15 @@ public class MyQueue<E> implements Queue<E>, Iterable<E>
         array[tail] = elem;
         tail = (tail + 1) % array.length;
         size++;
+        return true;
     }
 
     @Override
     public boolean offer(E elem){
         try{
             return add(elem);
-        } catch (Exeption ex){
-            rerurn false;
+        } catch (Exception ex){
+            return false;
         }
 
     }
@@ -60,7 +61,7 @@ public class MyQueue<E> implements Queue<E>, Iterable<E>
         if (size == 0) {
             throw new NoSuchElementException("Queue is empty");
         }
-        return this.peek;
+        return this.peek();
     }
 
     @Override
@@ -106,7 +107,7 @@ public class MyQueue<E> implements Queue<E>, Iterable<E>
         for (int i = 0, index = head; i < size; i++, index = (index + 1) % array.length) {
             if (obj.equals(array[index])){
                removeAtIndex(index);
-               return true
+               return true;
             }
         }
         return false;
