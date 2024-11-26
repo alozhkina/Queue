@@ -28,6 +28,7 @@ public class MyQueue<E> implements Queue<E>, Iterable<E>
 
     @Override
     public boolean offer(E elem){
+
         return add(elem);
 
     }
@@ -148,7 +149,6 @@ public class MyQueue<E> implements Queue<E>, Iterable<E>
      }
 
 
-    // Метод для сравнения очередей
     @Override
     public boolean equals(Object obj){
         if (this == obj) return true;
